@@ -1,0 +1,32 @@
+from os import name
+from behave import *
+import restapicalls
+
+endpoint = None
+request = None
+response_code = None
+
+
+baseurl = 'https://virtserver.swaggerhub.com/imadyasha.padhee/MusicAPIZooniverese/1.0.0'
+@given( 'I set GET findByname API endpoint')
+def set_endpoint(context):
+    global endpoint
+    endpoint = 'findByName'
+@given('I have valid  Singername')
+def singername(context):
+    global name
+    name = 'adyasha'
+@when('I sendGET HTTPS request')
+def send_request(context):
+    global request
+    global baseurl
+    request = restapicalls.api_call(method= 'GET',url=baseurl+'/song/findByName',load='adyasha')
+@then('I receive a valid HTTPS response code 200')
+def response(context):
+    global response_code
+    response_code = request[0] 
+    assert response_code == 200
+    
+    
+    
+    
