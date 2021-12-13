@@ -1,0 +1,58 @@
+base_file_name = "testcucumber"
+testcucumber = """
+from os import name
+from behave import *
+import restapicalls
+
+endpoint = None
+request = None
+response_code = None
+
+baseurl = 'https://virtserver.swaggerhub.com/imadyasha.padhee/MusicAPIZooniverese/1.0.0'
+@given( 'I set {method} {endpoint} API endpoint')
+  global endpoint
+  endpoint = {endpoint}
+@given('I have valid {parameter_value} ')
+  global name
+  name = {parameter_value}
+@when('I send {} HTTPS request')
+  global request
+  global baseurl
+  request = {restapicalls.api_call(method= '{method}',url=baseurl+'/song/{endpoint}',load='{parameter}'}
+@then('I receive a valid HTTPS response code 200')
+  global response_code
+  response_code = request[0] 
+  assert response_code == 200
+"""
+
+           
+def createfile():              #create a file
+    filename = base_file_name + 'auto' + ".py"         #sting to store the name of the file
+    print(filename)    #printing file name
+    try:
+        
+
+        file = open(filename, "a")    #open is a function to create file  # a stringparameter to create a file
+    except :
+        print ("unable to create file")
+    return file
+
+
+
+def create_cucumber_script(endpoints,methods,parameter_values,parameters):
+    try:                                   #exception handeling
+        file = createfile()
+        txt = testcucumber.format(method=methods,endpoint = endpoints, parameter_value= parameter_values, parameter = parameters)  
+        print (testcucumber)  
+        with open(file.name, 'w') as f:    #open(file.name, w) is for writing things into the file
+            f.write (txt) 
+            
+                          
+            
+    except Exception as error:
+        print (error)
+        print ("file modification error")
+        return
+    
+    return file                
+create_cucumber_script(endpoints = 'findByName', methods = 'post', parameter_values = 'adya', parameters = 'None') 
